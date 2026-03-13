@@ -1,0 +1,451 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        96,
+        0
+      ],
+      "id": "11f06872-9cd2-4f47-a220-0755032c3ce2",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "5f423253-932d-4d75-b4ee-25163744a17c",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c09a5c1e-c591-43b1-be7e-aad3ee633cce",
+              "leftValue": "={{$json.email}}",
+              "rightValue": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "d49e65bd-0394-4e10-87d2-6b6c127b0287",
+      "name": "Validate Email"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "956c2d67-a0d2-45da-8e05-ec6f2746401f",
+              "leftValue": "={{$json.priority}}",
+              "rightValue": "Low",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "322f4f92-0a64-44bd-b72a-2c59ba2a9460",
+              "leftValue": "={{$json.priority}}",
+              "rightValue": "Medium",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "9bce8e2c-833f-4496-8b52-af9ef3afaf20",
+              "leftValue": "={{$json.priority}}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "51696243-052e-4aac-82ed-ef9d87505476",
+      "name": "Filter issue type"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.issueType}}",
+                    "rightValue": "wifi",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2928d293-5bf3-4e5e-b00a-84eabf18ccae"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cdc6ef3f-f573-4b99-8b24-75fdb269872b",
+                    "leftValue": "={{$json.issueType}}",
+                    "rightValue": "login",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "748708e1-fb5c-497c-9fd5-416699e99142",
+                    "leftValue": "={{$json.issueType}}",
+                    "rightValue": "software",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2aee6faf-fd62-42c6-9171-481afe487a03",
+                    "leftValue": "={{$json.issueType}}",
+                    "rightValue": "hardware",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2c8b66ba-a849-4e93-9306-3b75bc87f0f0",
+                    "leftValue": "={{$json.issueType}}",
+                    "rightValue": "other",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        -128
+      ],
+      "id": "a797ef60-78a2-4558-932a-67c05d4354ae",
+      "name": "Route Ticket Type"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1040,
+        -128
+      ],
+      "id": "c370b5ae-8d5f-4d08-af9a-bdd1ec2ab444",
+      "name": "Combine Tickets"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "for item in _items:\n    priority = item[\"json\"][\"priority\"]\n\n    if priority == \"High\":\n        sla = \"4 hours\"\n    elif priority == \"Medium\":\n        sla = \"24 hours\"\n    elif priority == \"Low\":\n        sla = \"72 hours\"\n    else:\n        sla = \"Unknown\"\n\n    item[\"json\"][\"sla_deadline\"] = sla\n\nreturn _items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        -80
+      ],
+      "id": "03ef091c-505d-44f2-851f-98512a071ffc",
+      "name": "Assign SLA"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "items = _items\n\ntotal = len(items)\n\nhigh = 0\nmedium = 0\nlow = 0\n\nfor item in items:\n    priority = item[\"json\"][\"priority\"]\n\n    if priority == \"High\":\n        high += 1\n    elif priority == \"Medium\":\n        medium += 1\n    elif priority == \"Low\":\n        low += 1\n\nsummary = {\n    \"Total Tickets\": total,\n    \"High Priority\": high,\n    \"Medium Priority\": medium,\n    \"Low Priority\": low\n}\n\nreturn [{\"json\": summary}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        -80
+      ],
+      "id": "c2d7d168-14ef-41b7-b0ec-1cef666880e3",
+      "name": "Generate Summary"
+    }
+  ],
+  "pinData": {
+    "Extract from File": [
+      {
+        "json": {
+          "name": "Gokul",
+          "email": "gokul@gmail.com",
+          "issueType": "wifi",
+          "priority": "High",
+          "description": "wifi not working"
+        }
+      },
+      {
+        "json": {
+          "name": "Theja",
+          "email": "theja@gmail.com",
+          "issueType": "login",
+          "priority": "Medium",
+          "description": "cannot login"
+        }
+      },
+      {
+        "json": {
+          "name": "Naveen",
+          "email": "naveen@gmail",
+          "issueType": "software",
+          "priority": "Low",
+          "description": "installation problem"
+        }
+      },
+      {
+        "json": {
+          "name": "Kishore",
+          "email": "kishore@gmail.com",
+          "issueType": "hardware",
+          "priority": "High",
+          "description": "laptop not starting"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Validate Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Email": {
+      "main": [
+        [
+          {
+            "node": "Filter issue type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter issue type": {
+      "main": [
+        [
+          {
+            "node": "Route Ticket Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Ticket Type": {
+      "main": [
+        [
+          {
+            "node": "Combine Tickets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Combine Tickets",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Combine Tickets",
+            "type": "main",
+            "index": 2
+          }
+        ],
+        [
+          {
+            "node": "Combine Tickets",
+            "type": "main",
+            "index": 3
+          }
+        ],
+        [
+          {
+            "node": "Combine Tickets",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Combine Tickets": {
+      "main": [
+        [
+          {
+            "node": "Assign SLA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assign SLA": {
+      "main": [
+        [
+          {
+            "node": "Generate Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Summary": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "2d6dba12-c53d-4373-aba0-2ce7e3ab3f71",
+  "meta": {
+    "instanceId": "8ad74838bd3f2511b31f51e8b5451e88c095da6e451c256d3d036eaf7153b276"
+  },
+  "id": "f3zKiXqdi9O5NiVP",
+  "tags": []
+}
